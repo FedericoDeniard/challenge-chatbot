@@ -15,9 +15,16 @@
 }
 
 .chat-message {
+  border-radius: 10px;
+  padding: 5px 20px 5px 20px;
 }
 
 .chat-message-user {
+  background-color: #3e7d7f;
+  text-align: right;
+}
+.chat-message-bot {
+  background-color: #ff6f61;
 }
 
 .chat-input-container {
@@ -44,14 +51,14 @@
   flex: 1;
   font-size: inherit;
   font-weight: 700;
-  background-color: #191970;
+  background-color: #3e7d7f;
 }
 
 .chat-submit:hover {
-  background-color: #141458;
+  background-color: #285052;
   color: #fff;
 }
 
 .chat-submit:active {
-  background-color: #3131dd;
+  background-color: #53a4a7;
 }

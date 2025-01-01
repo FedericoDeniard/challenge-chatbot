@@ -13,13 +13,14 @@ export const Chat = () => {
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let userMessage = inputRef.current?.value;
+    const userMessage = inputRef.current?.value;
     if (userMessage && checkMessage(userMessage)) {
       setChatHistory((prev) => [
         ...prev,
         { user: "user", message: userMessage },
       ]);
       e.currentTarget.reset();
+      fetchAnswer(userMessage);
     }
   };
 
@@ -30,6 +31,19 @@ export const Chat = () => {
       chatHistory[chatHistory.length - 1].user === "bot";
     let canSend = checkEmpty && checkTurn;
     return canSend;
+  };
+
+  const fetchAnswer = async (prompt: string) => {
+    console.log("Haciendo peticion");
+    const response = await fetch("http://localhost:3000/groq", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await response.json();
+    setChatHistory((prev) => [...prev, { user: "bot", message: data }]);
   };
 
   return (
@@ -43,7 +57,12 @@ export const Chat = () => {
                 message.user != "bot" ? "user" : "bot"
               }`}
             >
-              {message.user}: {message.message}
+              {message.message.split("<br>").map((line, idx) => (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </p>
           );
         })}
