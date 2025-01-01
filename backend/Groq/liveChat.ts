@@ -28,3 +28,20 @@ export const LiveChat = async () => {
     }
 
 }
+
+interface ChatEntry {
+    user: string;
+    message: string;
+    chatHistory: Array<ChatCompletionMessageParam>;
+}
+
+export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }) => {
+    const groqClient = groq;
+    const { chatHistory, message } = chatEntry
+    chatHistory.push({ role: "user", content: message })
+    const chatCompletion = await groqClient.chat.completions.create({
+        ...defaultParameters,
+        messages: [...defaultParameters.messages, ...chatHistory]
+    })
+    return chatCompletion.choices[0]?.message?.content || ""
+}

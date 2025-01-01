@@ -10,7 +10,7 @@ export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
   messages: [
     {
       role: "system",
-      content: Prompts.context + "El menú es: " + JSON.stringify(Prompts.menu) + ". No muestres nada más que no sea el menú que te di",
+      content: Prompts.context + "El menú es: " + JSON.stringify(Prompts.menu)
     }
   ],
   model: "llama-3.3-70b-versatile",
