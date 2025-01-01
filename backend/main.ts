@@ -2,9 +2,27 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { Chat, LiveChat } from './Groq/liveChat.js';
 import cors from 'cors';
+import session, { SessionData } from 'express-session';
+import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions.mjs';
+
+declare module 'express-session' {
+    interface SessionData {
+        history: Array<ChatCompletionMessageParam>
+    }
+}
 
 const app = express();
-app.use(cors())
+app.use(session({
+    secret: process.env.SESSION_SECRET || "",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        httpOnly: true,
+        secure: false
+    },
+    name: 'groq-session'
+}))
+app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
 app.use(express.json());
 const PORT = 3000;
 
@@ -18,6 +36,10 @@ app.listen(PORT, () => {
 
 app.post('/groq', async (req: Request, res: Response) => {
     const { prompt } = req.body;
-    const response = await Chat({ chatEntry: { user: "user", message: prompt, chatHistory: [] } });
+    if (!req.session.history) {
+        req.session.history = []
+    }
+    const response = await Chat({ chatEntry: { user: "user", message: prompt, chatHistory: req.session.history } });
+    req.session.history.push({ role: "assistant", content: response })
     res.json(response);
 })
