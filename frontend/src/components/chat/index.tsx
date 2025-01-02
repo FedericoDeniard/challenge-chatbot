@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.css";
 
 interface ChatEntry {
@@ -9,6 +9,7 @@ interface ChatEntry {
 export const Chat = () => {
   const [chatHistory, setChatHistory] = useState<ChatEntry[]>([]);
 
+  const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +35,6 @@ export const Chat = () => {
   };
 
   const fetchAnswer = async (prompt: string) => {
-    console.log("Haciendo peticion");
     const response = await fetch("http://localhost:3000/groq", {
       method: "POST",
       headers: {
@@ -47,9 +47,15 @@ export const Chat = () => {
     setChatHistory((prev) => [...prev, { user: "bot", message: data }]);
   };
 
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
   return (
     <div className="chat-container">
-      <div className="chat-messages">
+      <div className="chat-messages" ref={chatRef}>
         {chatHistory.map((message, index) => {
           return (
             <p
