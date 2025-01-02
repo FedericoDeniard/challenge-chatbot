@@ -23,7 +23,7 @@ app.use(session({
     },
     name: 'groq-session'
 }))
-app.use(cors({ credentials: true, origin: 'http://localhost:5174' }));
+app.use(cors({ credentials: true, origin: EnvKeys.FRONTEND_URI || "http://localhost:5173" }));
 app.use(express.json());
 const PORT = 3000;
 
