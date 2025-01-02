@@ -38,6 +38,7 @@ interface ChatEntry {
 export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }) => {
     const groqClient = groq;
     const { chatHistory, message } = chatEntry
+    chatHistory.push({ role: "system", content: "La hora actual es: " + new Date().toString() })
     chatHistory.push({ role: "user", content: message })
     const chatCompletion = await groqClient.chat.completions.create({
         ...defaultParameters,
