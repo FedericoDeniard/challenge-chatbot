@@ -1,3 +1,4 @@
+import { EnvKeys } from './config/config.js';
 import express from 'express';
 import type { Request, Response } from 'express';
 import { Chat, LiveChat } from './Groq/liveChat.js';
@@ -13,7 +14,7 @@ declare module 'express-session' {
 
 const app = express();
 app.use(session({
-    secret: process.env.SESSION_SECRET || "",
+    secret: EnvKeys.SESSION_SECRET || "",
     saveUninitialized: false,
     resave: false,
     cookie: {
@@ -22,7 +23,7 @@ app.use(session({
     },
     name: 'groq-session'
 }))
-app.use(cors({ credentials: true, origin: 'http://localhost:5173' }));
+app.use(cors({ credentials: true, origin: 'http://localhost:5174' }));
 app.use(express.json());
 const PORT = 3000;
 
