@@ -43,7 +43,11 @@ export const Chat = () => {
       body: JSON.stringify({ prompt }),
       credentials: "include",
     });
-    const data = await response.json();
+    let data = await response.json();
+    if (!data.success) {
+      return;
+    }
+    data = data.data;
     setChatHistory((prev) => [...prev, { user: "bot", message: data }]);
   };
 
