@@ -41,16 +41,3 @@ export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
   // If set, partial message deltas will be sent.
   stream: false,
 }
-
-export async function main() {
-  const chatCompletion = await getGroqChatCompletion();
-  // Print the completion returned by the LLM.
-  console.log(chatCompletion.choices[0]?.message?.content || "");
-}
-
-export async function getGroqChatCompletion() {
-  return groq.chat.completions.create({
-    ...defaultParameters
-  });
-}
-
