@@ -3,17 +3,19 @@ import Groq from "groq-sdk";
 import * as dotenv from "dotenv";
 import Prompts from "./prompts.js";
 import { ChatCompletionCreateParamsNonStreaming } from "groq-sdk/resources/chat/completions.mjs";
+import { EnvKeys, MenuList } from "../config/config.js";
 
 dotenv.config();
-export const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+export const groq = new Groq({ apiKey: EnvKeys.GROQ_API_KEY });
 export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
   messages: [
     {
       role: "system",
-      content: Prompts.context + "El menú es: " + JSON.stringify(Prompts.menu) + ". No muestres nada más que no sea el menú que te di",
+      content: Prompts.context + "El menú es: " + JSON.stringify(MenuList, null, 2)
     }
   ],
   model: "llama-3.3-70b-versatile",
+
   // Optional parameters
   //
 

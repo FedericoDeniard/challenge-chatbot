@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./index.css";
 
 interface ChatEntry {
@@ -9,17 +9,19 @@ interface ChatEntry {
 export const Chat = () => {
   const [chatHistory, setChatHistory] = useState<ChatEntry[]>([]);
 
+  const chatRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let userMessage = inputRef.current?.value;
+    const userMessage = inputRef.current?.value;
     if (userMessage && checkMessage(userMessage)) {
       setChatHistory((prev) => [
         ...prev,
         { user: "user", message: userMessage },
       ]);
       e.currentTarget.reset();
+      fetchAnswer(userMessage);
     }
   };
 
@@ -32,9 +34,32 @@ export const Chat = () => {
     return canSend;
   };
 
+  const fetchAnswer = async (prompt: string) => {
+    const response = await fetch("http://localhost:3000/groq", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+      credentials: "include",
+    });
+    let data = await response.json();
+    if (!data.success) {
+      return;
+    }
+    data = data.data;
+    setChatHistory((prev) => [...prev, { user: "bot", message: data }]);
+  };
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
+
   return (
     <div className="chat-container">
-      <div className="chat-messages">
+      <div className="chat-messages" ref={chatRef}>
         {chatHistory.map((message, index) => {
           return (
             <p
@@ -43,7 +68,12 @@ export const Chat = () => {
                 message.user != "bot" ? "user" : "bot"
               }`}
             >
-              {message.user}: {message.message}
+              {message.message.split("<br>").map((line, idx) => (
+                <span key={idx}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </p>
           );
         })}
