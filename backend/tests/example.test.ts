@@ -1,6 +1,14 @@
-import { test, expect } from "@jest/globals";
 import { sum } from "./funcion";
-test("nombre del test", () => {
-  const result = sum(2, 2);
-  expect(result).toBe(4);
-});
+
+describe("Sumar", () => {
+  test("Sumar par", () => {
+    const result = sum(2, 2);
+    expect(result).toBe(4);
+  });
+
+  test("Sumar impar", () => {
+    const result = sum(3, 2);
+    expect(result).toBe(5);
+  });
+})
+

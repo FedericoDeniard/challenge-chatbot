@@ -1,11 +1,10 @@
 import Groq from "groq-sdk";
 
-import * as dotenv from "dotenv";
 import Prompts from "./prompts.js";
 import { ChatCompletionCreateParamsNonStreaming } from "groq-sdk/resources/chat/completions.mjs";
-import { EnvKeys, MenuList } from "../config/config.js";
+import { EnvKeys } from "../config/config.js";
+import { MenuList } from "../config/menu.js";
 
-dotenv.config();
 export const groq = new Groq({ apiKey: EnvKeys.GROQ_API_KEY });
 export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
   messages: [
