@@ -1,8 +1,9 @@
 import { defaultParameters, groq } from "./index.js"
 import readline from "readline";
 import { dbSushi } from "../Mongo/index.js";
-import { CustomError } from "../middlewares/index";
 import { ChatCompletionMessageParam } from "groq-sdk/src/resources/chat/completions.js";
+import { APIError as GroqAPIError } from "groq-sdk";
+import { CustomSuccesfullResponse, CustomErrorResponse } from "../types/responses.js";
 
 // export const LiveChat = async () => {
 //     const groqClient = groq;
@@ -37,7 +38,11 @@ interface ChatEntry {
     chatHistory: Array<ChatCompletionMessageParam>;
 }
 
-export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }) => {
+export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<CustomSuccesfullResponse<string> | CustomErrorResponse> => {
+    if (!chatEntry.message || chatEntry.message.trim().length == 0) {
+        return { success: false, error: "Empty message", details: null, status: 400 }
+
+    }
     const groqClient = groq;
     const { chatHistory, message } = chatEntry
     chatHistory.push({ role: "system", content: "La hora actual es: " + new Date().toString() })
@@ -49,15 +54,26 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }) => {
             stream: false
     })
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
-        return { success: true, data: response }
-    } catch (e: unknown) {
-        const error = e as CustomError
-        console.log(e)
-        return {
+        console.log("Groq: " + response)
+        return { success: true, data: response, status: 200 }
+    } catch (err) {
+        let customError = {
             success: false,
-            error: error.message || "Internal Server Error",
-            details: error.details || null
+            error: "Internal Server Error",
+            details: null,
+            status: 500
         }
+        if (err instanceof GroqAPIError) {
+            return {
+                success: false,
+                error: err.message,
+                details: err.name,
+                status: err.status
+            }
+        } else if (err instanceof Error) {
+            return { ...customError, error: err.message, details: err.name }
+        }
+        return customError
     }
 }
 

@@ -6,6 +6,7 @@ import cors from 'cors';
 import session from 'express-session';
 import { errorHandler } from './middlewares/index.js';
 import { ChatCompletionAssistantMessageParam } from 'groq-sdk/src/resources/chat/completions.js';
+import { CustomSuccesfullResponse } from './types/responses.js';
 
 declare module 'express-session' {
     interface SessionData {
@@ -38,8 +39,12 @@ app.post('/groq', async (req: Request, res: Response, next: NextFunction) => {
         req.session.history = []
     }
     const response = await Chat({ chatEntry: { user: "user", message: prompt, chatHistory: req.session.history } });
+        if (response.success && "data" in response) {
         req.session.history.push({ role: "assistant", content: response.data })
-    res.json(response);
+            res.status(response.status).json(response);
+        } else {
+            res.status(response.status).json(response);
+        }
     } catch (e) {
         next(e)
     }
