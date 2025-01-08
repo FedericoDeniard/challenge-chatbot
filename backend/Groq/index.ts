@@ -1,12 +1,12 @@
 import Groq from "groq-sdk";
 
 import Prompts from "./prompts.js";
-import { ChatCompletionCreateParamsNonStreaming } from "groq-sdk/resources/chat/completions.mjs";
 import { EnvKeys } from "../config/config.js";
 import { MenuList } from "../config/menu.js";
+import { ChatCompletionCreateParamsBase } from "groq-sdk/src/resources/chat/completions.js";
 
 export const groq = new Groq({ apiKey: EnvKeys.GROQ_API_KEY });
-export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
+export const defaultParameters: ChatCompletionCreateParamsBase = {
   messages: [
     {
       role: "system",

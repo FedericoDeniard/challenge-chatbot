@@ -1,35 +1,35 @@
-import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions.mjs";
 import { defaultParameters, groq } from "./index.js"
 import readline from "readline";
 import { dbSushi } from "../Mongo/index.js";
-import { CustomError } from "../middlewares/index.js";
+import { CustomError } from "../middlewares/index";
+import { ChatCompletionMessageParam } from "groq-sdk/src/resources/chat/completions.js";
 
-export const LiveChat = async () => {
-    const groqClient = groq;
-    const chatHistory: Array<ChatCompletionMessageParam> = [];
+// export const LiveChat = async () => {
+//     const groqClient = groq;
+//     const chatHistory: Array<ChatCompletionMessageParam> = [];
 
-    while (true) {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
+//     while (true) {
+//         const rl = readline.createInterface({
+//             input: process.stdin,
+//             output: process.stdout,
+//         });
 
-        const userInput: string = await new Promise((resolve) => {
-            rl.question("User: ", (input) => {
-                rl.close();
-                resolve(input);
-            });
-        });
-        chatHistory.push({ role: "user", content: userInput });
+//         const userInput: string = await new Promise((resolve) => {
+//             rl.question("User: ", (input) => {
+//                 rl.close();
+//                 resolve(input);
+//             });
+//         });
+//         chatHistory.push({ role: "user", content: userInput });
 
-        const chatCompletion = await groqClient.chat.completions.create({
-            ...defaultParameters,
-            messages: [...defaultParameters.messages, ...chatHistory]
-        })
-        console.log("Groq: " + chatCompletion.choices[0]?.message?.content || "")
-    }
+//         const chatCompletion = await groqClient.chat.completions.create({
+//             ...defaultParameters,
+//             messages: [...defaultParameters.messages, ...chatHistory]
+//         })
+//         console.log("Groq: " + chatCompletion.choices[0]?.message?.content || "")
+//     }
 
-}
+// }
 
 interface ChatEntry {
     user: string;
@@ -45,7 +45,8 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }) => {
     try {
     const chatCompletion = await groqClient.chat.completions.create({
         ...defaultParameters,
-        messages: [...defaultParameters.messages, ...chatHistory]
+            messages: [...defaultParameters.messages, ...chatHistory],
+            stream: false
     })
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
         return { success: true, data: response }

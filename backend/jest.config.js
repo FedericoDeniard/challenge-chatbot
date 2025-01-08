@@ -2,7 +2,17 @@
 export default {
   testEnvironment: "node",
   transform: {
-    "^.+.tsx?$": ["ts-jest", {}],
+    "^.+.tsx?$": [
+      "ts-jest",
+      {
+        useESM: true,
+        tsconfig: "./tsconfig.test.json",
+      },
+    ],
   },
   verbose: true,
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+  extensionsToTreatAsEsm: [".ts"],
 };
