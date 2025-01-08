@@ -4,6 +4,11 @@ import app from "../main";
 
 const api = supertest(app);
 
-test("Message is recieved as JSON", async () => {
-    await api.get("/").expect("Content-Type", /json/);
+test("No body sent", async () => {
+    await api.get("/groq").expect(404);
+})
+
+test("Empty prompt", async () => {
+    const body = { prompt: "" }
+    await api.post("/groq").send(body).expect(400);
 })
