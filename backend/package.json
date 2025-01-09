@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.js",
+    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.js --silent --detectOpenHandles ",
     "dev": "node --experimental-strip-types --experimental-transform-types main.ts",
     "build": "npx tsc",
     "start": "npx tsc && node ./dist/main.js"

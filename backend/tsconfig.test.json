@@ -8,7 +8,9 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "rootDir": "./",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "esModuleInterop": true
   },
-  "include": ["**/*.ts", "**/*.d.ts"]
+  "include": ["**/*.ts", "**/*.d.ts"],
+  "exclude": ["./tests", "node_modules", "./node_modules", "../node_modules"]
 }
