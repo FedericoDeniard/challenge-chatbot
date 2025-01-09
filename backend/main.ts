@@ -33,13 +33,13 @@ const PORT = 3000;
 app.post('/groq', async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-        const { prompt } = req.body;
-        if (!req.session.history) {
-            req.session.history = []
-        }
-        const response = await Chat({ chatEntry: { user: "user", message: prompt, chatHistory: req.session.history } });
+    const { prompt } = req.body;
+    if (!req.session.history) {
+        req.session.history = []
+    }
+    const response = await Chat({ chatEntry: { user: "user", message: prompt, chatHistory: req.session.history } });
         if (response.success && "data" in response) {
-            req.session.history.push({ role: "assistant", content: response.data })
+        req.session.history.push({ role: "assistant", content: response.data })
             res.status(response.status).json(response);
         } else {
             res.status(response.status).json(response);
@@ -49,7 +49,6 @@ app.post('/groq', async (req: Request, res: Response, next: NextFunction) => {
     }
 })
 
-export default app;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
