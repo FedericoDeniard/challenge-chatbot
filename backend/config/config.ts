@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import { MongoClientOptions } from "mongodb";
 dotenv.config();
 
 
@@ -18,5 +19,9 @@ export const EnvKeys: EnvKeysType = {
     PRODUCTION: process.env.NODE_ENV === "production"
 
 };
+
+export const MongoOptions: MongoClientOptions = {
+    timeoutMS: 1000
+}
 
 

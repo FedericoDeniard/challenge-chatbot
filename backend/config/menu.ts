@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { dbSushi } from "../Mongo/index.js";
+import { disconnectMongo, getDb } from "../Mongo/index.js";
 
 type Menu = Readonly<{
     _id: ObjectId;
@@ -8,4 +8,10 @@ type Menu = Readonly<{
     description: string;
 }>
 
-export const MenuList: Menu[] = await dbSushi.collection<Menu>("menu").find({}).toArray();
+
+export const MenuList: Menu[] = await (async () => {
+    const db = await getDb();
+    const menuList = await db.collection<Menu>("menu").find({}).toArray();
+    await disconnectMongo();
+    return menuList;
+})();

@@ -1,9 +1,10 @@
 import { defaultParameters, groq } from "./index.js"
 import readline from "readline";
-import { dbSushi } from "../Mongo/index.js";
 import { ChatCompletionMessageParam } from "groq-sdk/src/resources/chat/completions.js";
 import { APIError as GroqAPIError } from "groq-sdk";
 import { CustomSuccesfullResponse, CustomErrorResponse } from "../types/responses.js";
+import { disconnectMongo, getDb } from "../Mongo/index.js";
+import { MongoServerSelectionError } from "mongodb";
 
 // export const LiveChat = async () => {
 //     const groqClient = groq;
@@ -70,7 +71,16 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
                 details: err.name,
                 status: err.status
             }
-        } else if (err instanceof Error) {
+        }
+        else if (err instanceof MongoServerSelectionError) {
+            return {
+                success: false,
+                error: "Error connecting to MongoDB: Server is offline",
+                details: err.name,
+                status: 504
+            }
+        }
+        else if (err instanceof Error) {
             return { ...customError, error: err.message, details: err.name }
         }
         return customError
@@ -84,7 +94,14 @@ const makeOrder = async (prompt: string) => {
         let splittedPrompt = prompt.split("MAKEORDER")
         showUser = splittedPrompt[0]
         console.log("La orden es: " + splittedPrompt[1])
-        dbSushi.collection("orders").insertOne(JSON.parse(splittedPrompt[1]))
+        try {
+            let db = await getDb()
+            await db.collection("orders").insertOne(JSON.parse(splittedPrompt[1]))
+            await disconnectMongo()
+        }
+        catch (error) {
+            throw error
+        }
     }
     return showUser
 }
