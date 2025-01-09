@@ -1,13 +1,12 @@
 import Groq from "groq-sdk";
 
-import * as dotenv from "dotenv";
 import Prompts from "./prompts.js";
-import { ChatCompletionCreateParamsNonStreaming } from "groq-sdk/resources/chat/completions.mjs";
-import { EnvKeys, MenuList } from "../config/config.js";
+import { EnvKeys } from "../config/config.js";
+import { MenuList } from "../config/menu.js";
+import { ChatCompletionCreateParamsBase } from "groq-sdk/src/resources/chat/completions.js";
 
-dotenv.config();
 export const groq = new Groq({ apiKey: EnvKeys.GROQ_API_KEY });
-export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
+export const defaultParameters: ChatCompletionCreateParamsBase = {
   messages: [
     {
       role: "system",
@@ -41,16 +40,3 @@ export const defaultParameters: ChatCompletionCreateParamsNonStreaming = {
   // If set, partial message deltas will be sent.
   stream: false,
 }
-
-export async function main() {
-  const chatCompletion = await getGroqChatCompletion();
-  // Print the completion returned by the LLM.
-  console.log(chatCompletion.choices[0]?.message?.content || "");
-}
-
-export async function getGroqChatCompletion() {
-  return groq.chat.completions.create({
-    ...defaultParameters
-  });
-}
-

@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES2022",
+    "target": "ES2022",
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "rootDir": "./",
+    "outDir": "./dist",
+    "esModuleInterop": true
+  },
+  "include": ["**/*.ts", "**/*.d.ts"],
+  "exclude": ["./tests", "node_modules", "./node_modules", "../node_modules"]
+}
