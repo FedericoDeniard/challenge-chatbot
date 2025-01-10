@@ -57,3 +57,8 @@ $  node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
 ```
 
 - **FRONTEND_URI** (La URL donde se aloja el frontend, necesario para el _CORS_, por defecto se aloja en el puerto 5173)
+
+### Errores manejados
+
+- **MongoServerSelectionError**: La base de datos no está ejecutandose
+- **GroqApiError**: Se manejan errores que pueda causar Groq, como por ejemplo, la falta de tokens.
