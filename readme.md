@@ -21,16 +21,16 @@
 
 - MongoDB para desarollo local
 
-### Cargar menu de prueba
-
-```bash
-$ node --experimental-strip-types --experimental-transform-types backend/scripts/mongo.ts
-```
-
 ### Instalación del proyecto
 
 ```bash
 $  npm  install
+```
+
+### Cargar menu de prueba
+
+```bash
+$ npm run scripts
 ```
 
 ### Levantar el proyecto en local
@@ -49,7 +49,7 @@ $  npm  run  start
 
 En la carpeta /backend
 
-- **GROQ_API_KEY** (Clave del cliente de Groq)
+- **GROQ_API_KEY** (Clave del cliente de Groq) https://console.groq.com/keys
 - **SESSION_SECRET** (Clave para la sesión de express, recomiendo generarla con el siguiente comando)
 
 ```bash
@@ -57,6 +57,7 @@ $  node -e "console.log(require('crypto').randomBytes(16).toString('hex'))"
 ```
 
 - **FRONTEND_URI** (La URL donde se aloja el frontend, necesario para el _CORS_, por defecto se aloja en el puerto 5173)
+- **MONGO_URI** (La URL de la base de datos, por defecto se aloja en el puerto 27017)
 
 ### Errores manejados
 
