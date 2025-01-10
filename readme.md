@@ -56,6 +56,14 @@ $  sudo  systemctl  start  mongod
 
 ```bash
 
+$  npm  run  dev
+
+```
+
+o
+
+```bash
+
 $  npm  run  start
 
 ```
