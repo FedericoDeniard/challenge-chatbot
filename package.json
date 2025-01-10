@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run dev --workspace=frontend & npm run dev --workspace=backend",
+    "dev": "concurrently \"npm run dev --workspace=frontend\" \"npm run dev --workspace=backend\"",
     "start": "npm run dev --workspace=frontend & npm run start --workspace=backend"
   },
   "keywords": [],
@@ -14,5 +14,8 @@
   "workspaces": [
     "backend",
     "frontend"
-  ]
+  ],
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
