@@ -1,11 +1,11 @@
-import { EnvKeys } from './config/config.js';
+import { EnvKeys } from './config/config.ts';
 import express from 'express';
 import type { NextFunction, Request, Response } from 'express';
-import { Chat } from './Groq/liveChat.js';
+import { Chat } from './Groq/liveChat.ts';
 import cors from 'cors';
 import session from 'express-session';
-import { errorHandler } from './middlewares/index.js';
-import { ChatCompletionAssistantMessageParam } from 'groq-sdk/src/resources/chat/completions.js';
+import { errorHandler } from './middlewares/index.ts';
+import { ChatCompletionAssistantMessageParam } from 'groq-sdk/resources/chat/completions.mjs';
 
 declare module 'express-session' {
     interface SessionData {

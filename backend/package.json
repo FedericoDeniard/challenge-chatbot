@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --experimental-strip-types --experimental-transform-types main.ts",
+    "dev": " tsx main.ts",
     "build": "npx tsc",
-    "start": "npx tsc && node ./dist/main.js"
+    "start": "npx tsc && node ./dist/main.js",
+    "scripts": "tsx scripts/mongo.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +27,7 @@
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "dotenv": "^16.4.7",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   }
 }

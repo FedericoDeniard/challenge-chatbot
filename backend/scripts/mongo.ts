@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import { disconnectMongo, getDb } from "../Mongo/index.ts";
 
 const MenuList = [{
     name: 'Sushi clásico',
@@ -53,18 +53,19 @@ const MenuList = [{
 ]
 
 const uploadMenu = async () => {
-    const uri = "mongodb://localhost:27017";
-    const client = new MongoClient(uri);
+    const db = await getDb()
+    console.log("Cargando menu...")
     try {
-        await client.connect();
-        const dbSushi = client.db("sushi");
-        await dbSushi.collection("menu").insertMany(MenuList)
+
+        await db.collection("menu").insertMany(MenuList)
+        console.log("Menu cargado con éxito")
     } catch (error) {
-        console.log(error)
+        console.error("Error al cargar el menu:", error)
+
     } finally {
-        await client.close();
+        await disconnectMongo()
 
     }
 }
 
-uploadMenu()
+await uploadMenu()

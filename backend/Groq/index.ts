@@ -1,9 +1,9 @@
 import Groq from "groq-sdk";
 
-import Prompts from "./prompts.js";
-import { EnvKeys } from "../config/config.js";
-import { MenuList } from "../config/menu.js";
-import { ChatCompletionCreateParamsBase } from "groq-sdk/src/resources/chat/completions.js";
+import Prompts from "./prompts.ts";
+import { EnvKeys } from "../config/config.ts";
+import { MenuList } from "../config/menu.ts";
+import { ChatCompletionCreateParamsBase } from "groq-sdk/resources/chat/completions";
 
 export const groq = new Groq({ apiKey: EnvKeys.GROQ_API_KEY });
 export const defaultParameters: ChatCompletionCreateParamsBase = {

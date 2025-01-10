@@ -1,11 +1,11 @@
 import { Db, MongoClient, MongoServerSelectionError } from "mongodb";
-import { EnvKeys, MongoOptions } from "../config/config.js";
+import { EnvKeys } from "../config/config.ts";
 
 const uri = EnvKeys.MONGO_URI;
 if (!uri) {
     throw new Error("MONGO_URI is not defined");
 }
-const client = new MongoClient(uri, MongoOptions);
+const client = new MongoClient(uri);
 
 export const getDb = async (): Promise<Db> => {
 
