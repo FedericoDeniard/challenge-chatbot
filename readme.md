@@ -78,6 +78,10 @@ $  node  -e  "console.log(require('crypto').randomBytes(16).toString('hex'))"
 
 - **MONGO_URI** (La URL de la base de datos, por defecto se aloja en el puerto 27017)
 
+### Endpoints disponibles
+
+**/groq**: Recibe un prompt en el body que será enviado a la API de groq, devuelve un status junto a un objeto con la respuesta.
+
 ### Errores manejados
 
 - **MongoServerSelectionError**: La base de datos no está ejecutándose
