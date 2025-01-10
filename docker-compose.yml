@@ -1,0 +1,25 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+      - "5173:5173"
+    depends_on:
+      - mongodb
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://mongodb:27017/sushibot
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - FRONTEND_URI=http://localhost:5173
+    command: npm run start
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
