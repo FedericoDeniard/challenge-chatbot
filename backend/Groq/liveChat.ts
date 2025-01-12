@@ -26,7 +26,6 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
             stream: false
         })
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
-        console.log("Groq: " + response)
         return { success: true, data: response, status: 200 }
     } catch (err) {
         let customError = {
@@ -64,7 +63,6 @@ const makeOrder = async (prompt: string) => {
     if (index !== -1) {
         let splittedPrompt = prompt.split("MAKEORDER")
         showUser = splittedPrompt[0]
-        console.log("La orden es: " + splittedPrompt[1])
         try {
             let db = await getDb()
             await db.collection("orders").insertOne(JSON.parse(splittedPrompt[1]))

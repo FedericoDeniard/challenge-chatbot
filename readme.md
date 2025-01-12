@@ -32,7 +32,11 @@
 
 ```bash
 
+
+
 $  npm  install
+
+
 
 ```
 
@@ -40,7 +44,11 @@ $  npm  install
 
 ```bash
 
+
+
 $  npm  run  scripts
+
+
 
 ```
 
@@ -50,27 +58,25 @@ Desde la carpeta raíz.
 
 ```bash
 
+
+
 $  sudo  systemctl  start  mongod
+
+
 
 ```
 
 ```bash
+
+
 
 $  npm  run  dev
 
-```
 
-o
-
-```bash
-
-$  npm  run  start
 
 ```
 
 ### Variables de entorno
-
-En la carpeta /backend
 
 - **GROQ_API_KEY** (Clave del cliente de Groq) https://console.groq.com/keys
 
@@ -78,11 +84,15 @@ En la carpeta /backend
 
 ```bash
 
+
+
 $  node  -e  "console.log(require('crypto').randomBytes(16).toString('hex'))"
+
+
 
 ```
 
-- **FRONTEND_URI** (La URL donde se aloja el frontend, necesario para el _CORS_, por defecto se aloja en el puerto 5173)
+- **VITE_PORT** (El puerto donde se aloja el frontend, necesario para el _CORS_, por defecto se aloja en el puerto 5173)
 
 - **MONGO_URI** (La URL de la base de datos, por defecto se aloja en el puerto 27017)
 
@@ -103,4 +113,5 @@ El objetivo del bot es guiar al usuario para que pueda realizar un pedido. Para 
 ### Consideraciones
 
 - Por el momento el bot almacena el historial de chat en el servidor (utilizando express-session), pero lo ideal sería guardar el historial del chat en la base de datos de usuarios.
+
 - El bot le pide al usuario teléfono y dirección para enviar el pedido, pero debería ser enviado desde la base de datos de los usuarios registrados.
