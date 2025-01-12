@@ -20,11 +20,11 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
     chatHistory.push({ role: "system", content: "La hora actual es: " + new Date().toString() })
     chatHistory.push({ role: "user", content: message })
     try {
-    const chatCompletion = await groqClient.chat.completions.create({
-        ...defaultParameters,
+        const chatCompletion = await groqClient.chat.completions.create({
+            ...defaultParameters,
             messages: [...defaultParameters.messages, ...chatHistory],
             stream: false
-    })
+        })
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
         console.log("Groq: " + response)
         return { success: true, data: response, status: 200 }

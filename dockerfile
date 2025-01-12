@@ -14,10 +14,8 @@ COPY . .
 
 RUN npm install -g typescript
 
+
 ENV PORT=3000
-ENV MONGODB_URI=mongodb://localhost:27017
 
 
 EXPOSE 3000 5173
-
-CMD [ "npm", "run", "start" ]
