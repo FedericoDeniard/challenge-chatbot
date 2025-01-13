@@ -21,6 +21,7 @@ export const Chat = () => {
         { user: "user", message: userMessage },
       ]);
       e.currentTarget.reset();
+      setChatHistory((prev) => [...prev, { user: "bot", message: "..." }]);
       fetchAnswer(userMessage);
     }
   };
@@ -48,6 +49,7 @@ export const Chat = () => {
       return;
     }
     data = data.data;
+    setChatHistory((prev) => prev.slice(0, prev.length - 1));
     setChatHistory((prev) => [...prev, { user: "bot", message: data }]);
   };
 
