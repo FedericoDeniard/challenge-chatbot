@@ -31,49 +31,33 @@
 ### Instalación del proyecto
 
 ```bash
-
-
-
 $  npm  install
-
-
-
 ```
 
 ### Cargar menú de prueba
 
 ```bash
-
-
-
 $  npm  run  scripts
-
-
-
 ```
 
 ### Levantar el proyecto en local
 
 Desde la carpeta raíz.
 
+**Opción A: Docker**
+
 ```bash
+$  sudo docker compose up --build
+```
 
+**Opción B: Local**
 
-
+```bash
 $  sudo  systemctl  start  mongod
-
-
-
 ```
 
 ```bash
-
-
-
 $  npm  run  dev
-
-
-
 ```
 
 ### Variables de entorno
@@ -83,13 +67,7 @@ $  npm  run  dev
 - **SESSION_SECRET** (Clave para la sesión de express, recomiendo generarla con el siguiente comando)
 
 ```bash
-
-
-
 $  node  -e  "console.log(require('crypto').randomBytes(16).toString('hex'))"
-
-
-
 ```
 
 - **VITE_PORT** (El puerto donde se aloja el frontend, necesario para el _CORS_, por defecto se aloja en el puerto 5173)
