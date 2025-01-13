@@ -28,6 +28,7 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
         return { success: true, data: response, status: 200 }
     } catch (err) {
+        console.log(err)
         let customError = {
             success: false,
             error: "Internal Server Error",
