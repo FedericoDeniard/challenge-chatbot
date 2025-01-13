@@ -13,7 +13,7 @@ export const defaultParameters: ChatCompletionCreateParamsBase = {
       content: Prompts.context + "El menú es: " + JSON.stringify(MenuList, null, 2)
     }
   ],
-  model: "llama-3.3-70b-versatile",
+  model: "llama-3.1-8b-instant",
 
   // Optional parameters
   //

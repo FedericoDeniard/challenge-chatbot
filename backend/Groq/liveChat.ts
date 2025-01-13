@@ -1,7 +1,7 @@
 import { defaultParameters, groq } from "./index.ts"
 import { APIError as GroqAPIError } from "groq-sdk";
 import { disconnectMongo, getDb } from "../Mongo/index.ts";
-import { MongoServerSelectionError } from "mongodb";
+import { MongoServerSelectionError, ObjectId } from "mongodb";
 import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions.mjs";
 import { CustomErrorResponse, CustomSuccesfullResponse } from "../types/responses.ts";
 interface ChatEntry {
@@ -20,15 +20,16 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
     chatHistory.push({ role: "system", content: "La hora actual es: " + new Date().toString() })
     chatHistory.push({ role: "user", content: message })
     try {
-    const chatCompletion = await groqClient.chat.completions.create({
-        ...defaultParameters,
+        const chatCompletion = await groqClient.chat.completions.create({
+            ...defaultParameters,
             messages: [...defaultParameters.messages, ...chatHistory],
             stream: false
-    })
+        })
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
-        console.log("Groq: " + response)
+        // let response = await makeOrder(`Su pedido a sido confirmado <br> MAKEORDER {"products": ["67811c731e05e5012f5a23a1"], "quantity": [3], "total": 30, "phone": "+5412122323", "address": "asdasd 1245 a"}`)
         return { success: true, data: response, status: 200 }
     } catch (err) {
+        console.log(err)
         let customError = {
             success: false,
             error: "Internal Server Error",
@@ -64,14 +65,19 @@ const makeOrder = async (prompt: string) => {
     if (index !== -1) {
         let splittedPrompt = prompt.split("MAKEORDER")
         showUser = splittedPrompt[0]
-        console.log("La orden es: " + splittedPrompt[1])
         try {
             let db = await getDb()
-            await db.collection("orders").insertOne(JSON.parse(splittedPrompt[1]))
+            let formattedData = JSON.parse(splittedPrompt[1])
+            if (formattedData.products && Array.isArray(formattedData.products)) {
+                formattedData.products = formattedData.products.map((id: string) => new ObjectId(id))
+            }
+            await db.collection("orders").insertOne(formattedData)
             await disconnectMongo()
+            showUser = "Su pedido a sido confirmado"
         }
         catch (error) {
-            throw error
+            console.log(error)
+            showUser = "Su pedido no pudo ser confirmado"
         }
     }
     return showUser
