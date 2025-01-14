@@ -17,7 +17,7 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
     }
     const groqClient = groq;
     const { chatHistory, message } = chatEntry
-    chatHistory.push({ role: "system", content: "La hora actual es: " + new Date().toString() })
+    chatHistory.push({ role: "system", content: "La hora actual es: " + new Date().toLocaleTimeString() })
     chatHistory.push({ role: "user", content: message })
     try {
         const chatCompletion = await groqClient.chat.completions.create({
