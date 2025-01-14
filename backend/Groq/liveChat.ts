@@ -26,7 +26,6 @@ export const Chat = async ({ chatEntry }: { chatEntry: ChatEntry }): Promise<Cus
             stream: false
         })
         let response = await makeOrder(chatCompletion.choices[0]?.message?.content || "")
-        // let response = await makeOrder(`Su pedido a sido confirmado <br> MAKEORDER {"products": ["67811c731e05e5012f5a23a1"], "quantity": [3], "total": 30, "phone": "+5412122323", "address": "asdasd 1245 a"}`)
         return { success: true, data: response, status: 200 }
     } catch (err) {
         console.log(err)
@@ -77,7 +76,7 @@ const makeOrder = async (prompt: string) => {
         }
         catch (error) {
             console.log(error)
-            showUser = "Su pedido no pudo ser confirmado"
+            showUser = "Su pedido no pudo ser confirmado, intentelo de nuevo o contacte al soporte, lo sentimos!"
         }
     }
     return showUser
